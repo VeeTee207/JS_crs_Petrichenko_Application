@@ -21,15 +21,25 @@
 
 'use strict';
 
-const numberOfFilms = +prompt("How many movies have you seen already?"),
+let numberOfFilms;
 
-    personalMovieDB = {
-        count: numberOfFilms,
-        movies: {},
-        actors: {},
-        genres: [],
-        privat: false,
-    };
+
+function start() {
+    numberOfFilms = +prompt("How many movies have you seen already?");
+    while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
+        alert("The answer has to be a number and can not be empty!");
+        numberOfFilms = +prompt("How many movies have you seen already?");
+    }
+}
+start();
+
+const personalMovieDB = {
+    count: numberOfFilms,
+    movies: {},
+    actors: {},
+    genres: [],
+    privat: false,
+};
 
 // lastMovie = prompt('Which movie do you watch last?'),
 // movieRate = +prompt('How do you rate it?');
@@ -47,30 +57,64 @@ const numberOfFilms = +prompt("How many movies have you seen already?"),
 
 // 4) Потренироваться и переписать цикл еще двумя способами * /
 
-for (let i = 0; i < 2; i++) {
+function rememberMyFilms() {
 
-    const lastMovie = prompt('Which movie do you watch last?');
-    if (lastMovie == '' || lastMovie.length > 50) {
-        alert("The answer can not be empty or longer 50 symbols!");
-        i--;
-        continue;
+    for (let i = 0; i < 2; i++) {
+
+        let lastMovie = prompt('Which movie do you watch last?');
+        while (lastMovie == '' || lastMovie == null || lastMovie.length > 50) {
+            alert("The answer can not be empty!");
+            lastMovie = prompt('Which movie do you watch last?');
+        }
+
+        let movieRate = +prompt('How do you rate the movie? Rate 1 to 10');
+        while (movieRate == null || movieRate == '' || isNaN(movieRate)) {
+            alert('The answer can not be empty and not a number!');
+            movieRate = +prompt('How do you rate the movie ? Rate 1 to 10 ');
+        }
+
+        personalMovieDB.movies[lastMovie] = movieRate;
     }
-    const movieRate = +prompt('How do you rate it?');
-    personalMovieDB.movies[lastMovie] = movieRate;
 }
+rememberMyFilms();
 
-if (personalMovieDB.count <= 10) {
-    console.log('very few films');
+function detectPersonalLevel() {
+    if (personalMovieDB.count <= 10) {
+        console.log('very few films');
 
-} else if (personalMovieDB.count > 10 && personalMovieDB.count < 30) {
-    console.log('classical tv fan');
+    } else if (personalMovieDB.count > 10 && personalMovieDB.count < 30) {
+        console.log('classical tv fan');
 
-} else if (personalMovieDB.count >= 30) {
-    console.log('addicted tv fan');
+    } else if (personalMovieDB.count >= 30) {
+        console.log('addicted tv fan');
 
-} else {
-    console.log('Some mistake is occured ! ');
+    } else {
+        console.log('Some mistake is occured ! ');
+    }
 }
+detectPersonalLevel();
+
+// 2) Создать функцию showMyDB, которая будет проверять свойство privat.Если стоит в позиции
+// false - выводит в консоль главный объект программы
+
+function showMyDB(hidden) {
+    if (!hidden) {
+        console.log(personalMovieDB);
+        console.log(hidden);
+    }
+}
+showMyDB(personalMovieDB.privat);
+
+// 3) Создать функцию writeYourGenres в которой пользователь будет 3 раза отвечать на вопрос
+//     "Ваш любимый жанр под номером ${номер по порядку}".Каждый ответ записывается в массив данных
+// genres
 
 
-console.log(personalMovieDB);
+function writeYourGenre() {
+    for (let i = 1; i <= 3; i++) {
+        personalMovieDB.genres[i - 1] = prompt(`What is your favorite genre ${i} :`);
+    }
+}
+writeYourGenre();
+
+console.log("end");
