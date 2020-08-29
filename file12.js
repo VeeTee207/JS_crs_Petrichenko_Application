@@ -116,5 +116,3 @@ function writeYourGenre() {
     }
 }
 writeYourGenre();
-
-console.log("end");
